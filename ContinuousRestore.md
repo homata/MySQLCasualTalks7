@@ -11,7 +11,7 @@
 
 ---
 
-![](http://img.laughy.jp/3838/default_f2d9d5f7f7055738d23f84dbe2500a96.jpg)
+![](http://stat.ameba.jp/user_images/20141211/06/kakerukaeru/84/f8/p/o0354033513155423588.png)
 
 ## いわながかける @kakerukaeru
 ゆとりインフラ園児にあ  
@@ -21,7 +21,7 @@ Ameba画像配信マン
 
 オエーー!!!!　＿＿_  
 　　　 ＿＿_／　　 ヽ  
-　　 ／　 ／　／⌒ヽ| 
+　　 ／　 ／　／⌒ヽ|  
 　　/ (ﾟ)/　／ /  
 　 /　　 ﾄ､/｡⌒ヽ。  
 　彳　　 ＼＼ﾟ｡∴｡ｏ  
@@ -40,26 +40,33 @@ Ameba画像配信マン
 
 ---
 
-![](/Users/a12638/Pictures/kari.jpeg)
 # [fit]game
 
----
+![](http://stat.ameba.jp/user_images/20131120/16/girlfriend-kari/18/1a/j/o0640068012755342735.jpg)
 
-![](/Users/a12638/Dropbox/スクリーンショット/スクリーンショット 2014-12-03 21.29.37.png)
+---
 
 # [fit]pigg
 
----
+![](https://stat.brave.pigg.ameba.jp/img/top/bg_header2.png)
 
-![](/Users/a12638/Dropbox/スクリーンショット/スクリーンショット 2014-12-03 21.11.07.png)
+---
 
 # [fit]blog
 
+![](http://stat100.ameba.jp/p_skin/w_officialskin/ab-anna06/img/header.jpg)
+
 ---
 
-![](http://stat.ameba.jp/user_images/20141202/19/principia-ca/61/a0/j/o0800053213147364213.jpg)
+#[fit]Community
+
+![](http://stat100.ameba.jp/common_style/img/ameba/lp/girls-talk/title_h1.jpg)
+
+---
 
 # [fit]MySQLいっぱい使ってるよ
+
+![](http://stat.ameba.jp/user_images/20141202/19/principia-ca/61/a0/j/o0800053213147364213.jpg)
 
 ---
 
@@ -73,7 +80,8 @@ Ameba画像配信マン
 	- Backupマデ
 	- Restoreマデ
 - もうちょっと考える
-- 今後どうしたい
+- 使ってみた所感
+- 今後
 
 ---
 
@@ -167,7 +175,8 @@ Ameba画像配信マン
 ---
 
 # 失敗したらどうしよ
-![fit](http://blog-imgs-31.fc2.com/t/h/u/thumiya84bka/200912302025482ff.png)
+
+![](http://stat.ameba.jp/user_images/20141211/05/kakerukaeru/92/25/j/o0450031613155415822.jpg)
 
 
 ---
@@ -262,37 +271,144 @@ Ameba画像配信マン
 
 ---
 
-# どんな項目があるかな
+# 確認項目、何があるかなー
 
 - テーブル破損
-	- mysql -e 'show databases;' | grep -v .ssh | grep -v Database | xargs mysqlcheck --databases
-- レコードのchecksum
-	- for database in `mysql -e 'show databases;' | grep -v .ssh | grep -v Databas` ; do for tables in `mysql -e "SHOW TABLES FROM $database" | grep -v "Tables_in_"` ; do mysql -e "checksum table $database.$tables" ;done ; done
+- テーブルの中身
 - テーブル定義
-    - show create table
-- index_check
-    - どうやってやろうかな  
-- もうないか
+- index確認
+
+```bash
+    mysqlcheck --all-databases
+	CHECKSUM TABLE hogehoge
+	SHOW CREATE TABLE hogehoge
+    SHOW INDEXES FROM hogehoge
+```
 
 ---
 
-# 上記のcheckの順番的にはこう
+# ただ
 
 ---
 
-![fit](/Users/a12638/Pictures/check_sum.png)
+# 毎回checksumを取るのは正直重い
 
 ---
 
-![fit](/Users/a12638/Pictures/check_sum.png)
+# ので、
+# ２つのレベルで考える
 
-# Backup処理の前にcheck_sumを挟む
+---
 
-- Backup_job直前に事前に決めていたcheckを走らせる
-- 結果を保持
-- そのまま、restoreを走らせる
-- ここの処理では、通常のBackup処理とは別の流れで行わないといけない
+- 都度check
+    - テーブル破損
+- 低頻度check
+    - テーブル破損
+    - テーブルの中身
+    - テーブル定義
+    - index確認
+
+---
+
+# [fit]都度checkの流れ
+
+---
+
+![fit](https://cacoo.com/diagrams/wAi5Qle3OcD5kBPG-4546C.png)
+
+---
+
+# 都度check
+
+### Restoreの流れの最期にmysqlcheckをはさんだだけ
+### 一旦テーブルが壊れてなかったらいいよね
+
+![fit](https://cacoo.com/diagrams/wAi5Qle3OcD5kBPG-4546C.png)
 
 
+---
 
+# [fit]低頻度checkの流れ
 
+---
+
+![fit](https://cacoo.com/diagrams/5wRmkoXqhlq5ESwY-4546C.png)
+
+---
+
+# なんのこっちゃ
+
+![fit](https://cacoo.com/diagrams/5wRmkoXqhlq5ESwY-4546C.png)
+
+---
+
+- stop Replication
+    - pre_checksum
+        - checksum table,show create table,show indexes from
+    - backup
+- start Replication
+    - restore
+    - diff pre_checksum
+    - mysqlcheck
+
+![fit](https://cacoo.com/diagrams/5wRmkoXqhlq5ESwY-4546C.png)
+
+---
+
+#これでdataの正当性も
+#ある程度担保できたかな
+
+---
+
+#[fit]：TODO
+#[fit]jobのスクショ貼る
+#[fit]わざと更新させて、diff prechecksumをコケさせる
+
+---
+
+# 動いてるね
+
+---
+
+# 安心して寝れる
+# ( ˘ω˘ ) ｽﾔｧ…
+
+---
+
+#[fit]使ってみた所感
+
+---
+
+#[fit] ~~正直今週稼働し始めたばっかだからまだ感想ない~~
+うちだと結構なService数が立ち上がってるんだけど、
+１Serviceずつrestore出来るかの確認を心温まる手作業で確認しなくても良くなったという精神的な安らぎを得ました。
+<br />
+あと、Restoreにどれぐらいの時間がかかるかとか分かったりしてちょっと楽しい
+
+---
+
+#[fit]今後
+
+---
+
+#不安点、改善点
+
+- check項目もっと詰めれる気がする
+- まだ５Serviceぐらいでしか稼働してない
+    - もっと実績増やす
+- まだ100GBぐらいまでの容量のrestoreしかしてない
+    - 容量増えてきたら今の方法だと
+    checkが終わらない気はしてる
+
+---
+
+#[fit]まとめ
+
+---
+
+#[fit]Backup担保により
+#[fit]快適なDB破壊ライフを！＾ｐ＾
+
+---
+
+#[fit]ご静聴ありがとうございました
