@@ -1,7 +1,8 @@
 
+
+
 #[fit] Continuous Restoreへの道
 
-### @kakerukaeru
 
 
 ---
@@ -15,12 +16,12 @@
 ## いわながかける @kakerukaeru
 ゆとりインフラ園児にあ  
 Amebaスマホプラットフォーム面倒見るマン  
-Ameba画像配信基盤マン  
+Ameba画像配信マン  
 最近良く触ってるデータストアはCassandra  
 
 オエーー!!!!　＿＿_  
 　　　 ＿＿_／　　 ヽ  
-　　 ／　 ／　／⌒ヽ|  
+　　 ／　 ／　／⌒ヽ| 
 　　/ (ﾟ)/　／ /  
 　 /　　 ﾄ､/｡⌒ヽ。  
 　彳　　 ＼＼ﾟ｡∴｡ｏ  
@@ -69,9 +70,9 @@ Ameba画像配信基盤マン
 
 - 継続的りすとあやってみた
 - どう実現したか
-	- 現在のバックアップ的な仕組み
-	- リストアまでの仕組み
-- 使ってみた所感
+	- Backupマデ
+	- Restoreマデ
+- もうちょっと考える
 - 今後どうしたい
 
 ---
@@ -92,8 +93,12 @@ Ameba画像配信基盤マン
 ---
 
 # Slave全台で一斉に
+# mysqld
 # 無限再起動開始
-# Slave脱落
+# Slave脱落[^1]
+
+
+[^1]: とあるDelete文発行→mysqld落ちる→mysqld_safe経由で上がる→レプリ再開でDelete文発行→mysqld落ちる→mysqld_safe(ry
 
 ---
 
@@ -102,8 +107,8 @@ Ameba画像配信基盤マン
 ---
 
 
-# [fit] ~~職務怠慢によりSlaveのダウンを放置~~
-# [fit] タイミングが悪く連続でSlave死亡
+# [fit] タイミングが悪く
+# 連続でSlave死亡
 # マスターシングル構成に
 
 ---
@@ -200,15 +205,13 @@ Ameba画像配信基盤マン
 
 ![fit](https://cacoo.com/diagrams/dfjBaxd615F7Uc9R-4546C.png)
 
-# よくある感じ？の奴
-
+# Backup
 
 - backup_job用のslave作成
 - backup_data置き場のserver準備
-- 定期xtrabackup
-    - 小さいserviceだと毎回FullBackup
-    - デカイ奴は差分Backup 
-- binlog随時sync
+- backup_serverより定期的にjob実行
+    - 定期xtrabackup
+    - binlog随時sync
 
 ---
 
@@ -222,26 +225,26 @@ Ameba画像配信基盤マン
 
 ![fit](https://cacoo.com/diagrams/30rMrryTpp5FGHaa-4546C.png)
 
-# 流れ
+# Restore
 
 - API経由でinstance作成
-- chef-soloにてサービス用のRecipeでmysql_setup
+- chef-soloにてmysql_setup
 - Backupサーバより最新のsnapshotとbinlogを転送
 - test-serverでrestore処理
+- instance削除
 
 ---
 
 # これで
 
-![fit]()
-
 ---
 
 # いつなんどきサーバが死んでも大丈夫
+# `_(ˇωˇ」∠)_` ｽﾔｧ…
 
 ---
 
-# もうちょっと踏み込んで
+# [fit]もうちょっと考える
 
 ---
 
@@ -249,16 +252,13 @@ Ameba画像配信基盤マン
 
 ---
 
-# リストアが完了してもテーブルの中身が0件だと意味ないよね
+# リストアが完了してもテーブルの中身が0件だと意味なし
 
 ---
 
-# Slaveとの整合性を考える
-
-- backup用のslave = restoreされたサーバの整合性を考える
-    -  CHECKSUM TABLE hogehoge;
+#[fit]backup用のSlaveの状態と
+#[fit]restore後の整合性を考える
  
-
 
 ---
 
