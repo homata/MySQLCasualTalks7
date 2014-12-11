@@ -70,6 +70,9 @@ Ameba画像配信マン
 
 ---
 
+# はい
+
+---
 
 #[fit]agenda
 
@@ -100,10 +103,8 @@ Ameba画像配信マン
 
 ---
 
-# Slave全台で一斉に
-# mysqld
-# 無限再起動開始
-# Slave脱落[^1]
+# [fit]Slave全台でdata不整合
+# Slave一気に脱落[^1]
 
 
 [^1]: とあるDelete文発行→mysqld落ちる→mysqld_safe経由で上がる→レプリ再開でDelete文発行→mysqld落ちる→mysqld_safe(ry
@@ -115,9 +116,8 @@ Ameba画像配信マン
 ---
 
 
-# [fit] タイミングが悪く
-# 連続でSlave死亡
-# マスターシングル構成に
+# [fit]おばかちゃんが
+# [fit]本番DBでDROP DATABASE
 
 ---
 
@@ -138,7 +138,7 @@ Ameba画像配信マン
 ---
 
 #＿人人人人人人＿
-#＞　Slave全台　＜
+#＞　 MySQL群　＜
 #＞　 突然の死 　＜
 #￣Y^Y^Y^Y^Y￣
 
@@ -216,11 +216,11 @@ Ameba画像配信マン
 
 # Backup
 
-- backup_job用のslave作成
-- backup_data置き場のserver準備
-- backup_serverより定期的にjob実行
+- backup用slave
+- backup用server
+- backup_serverより
     - 定期xtrabackup
-    - binlog随時sync
+    - 随時binlog_sync
 
 ---
 
@@ -244,7 +244,7 @@ Ameba画像配信マン
 
 ---
 
-# これで
+#[fit]これでRestoreの担保が出来た
 
 ---
 
@@ -257,26 +257,45 @@ Ameba画像配信マン
 
 ---
 
-# 何をもってリストア完了とするか
+# [fit]何をもってリストア完了とするか
 
 ---
 
-# リストアが完了してもテーブルの中身が0件だと意味なし
+#[fit] 空っぽのテーブルが
+#[fit] Restoreされても意味ない
 
 ---
 
-#[fit]backup用のSlaveの状態と
-#[fit]restore後の整合性を考える
+# [fit]なのでRestoreの正当性？
+# [fit]も担保してあげよう
+
+---
+
+# どこまでやるか
+
+---
+
+#[fit]backup用のSlaveと
+#[fit]restoreされたDBの整合性を考える
  
+---
+
+# つまり？
+
+---
+
+#[fit]Backup前とRestore後の確認項目に
+#[fit]diffがないことを確認
+
 
 ---
 
 # 確認項目、何があるかなー
 
-- テーブル破損
-- テーブルの中身
-- テーブル定義
-- index確認
+- テーブル破損がない事
+- テーブルの中身が一致していること
+- テーブル定義が一致していること
+- indexが一致していること
 
 ```bash
     mysqlcheck --all-databases
@@ -287,58 +306,53 @@ Ameba画像配信マン
 
 ---
 
-# ただ
+# [fit]これを踏まえた上でcheckの流れ
 
 ---
 
-# 毎回checksumを取るのは正直重い
-
----
-
-# ので、
-# ２つのレベルで考える
-
----
-
-- 都度check
-    - テーブル破損
-- 低頻度check
-    - テーブル破損
-    - テーブルの中身
-    - テーブル定義
-    - index確認
-
----
-
-# [fit]都度checkの流れ
-
----
-
-![fit](https://cacoo.com/diagrams/wAi5Qle3OcD5kBPG-4546C.png)
-
----
-
-# 都度check
-
-### Restoreの流れの最期にmysqlcheckをはさんだだけ
-### 一旦テーブルが壊れてなかったらいいよね
-
-![fit](https://cacoo.com/diagrams/wAi5Qle3OcD5kBPG-4546C.png)
+#No.1
+![fit](https://cacoo.com/diagrams/214J2QEBCs3lpF2N-4546C.png)
 
 
 ---
 
-# [fit]低頻度checkの流れ
+#No.2
+![fit](https://cacoo.com/diagrams/1ltuHzNl9Vqgv2tn-4546C.png)
 
 ---
 
-![fit](https://cacoo.com/diagrams/5wRmkoXqhlq5ESwY-4546C.png)
+#No.3
+![fit](https://cacoo.com/diagrams/7UXmKbmX4zxtKvKF-4546C.png)
 
 ---
 
-# なんのこっちゃ
+#No.4
+![fit](https://cacoo.com/diagrams/oToBQq5cMKxt53jM-4546C.png)
 
-![fit](https://cacoo.com/diagrams/5wRmkoXqhlq5ESwY-4546C.png)
+---
+
+# No.5
+![fit](https://cacoo.com/diagrams/Jud4CuRIdlhdnh7n-4546C.png)
+
+---
+
+# No.6
+![fit](https://cacoo.com/diagrams/8LnU41hNXe3WUiOl-4546C.png)
+
+---
+
+# No.7
+![fit](https://cacoo.com/diagrams/3cUSxYyHq7ojqY5X-4546C.png)
+
+---
+
+# No.8
+![fit](https://cacoo.com/diagrams/uuPqbPk0YCpyqlrf-4546C.png)
+
+---
+
+# No.9
+![fit](https://cacoo.com/diagrams/XTTz51e36WCfHsnH-4546C.png)
 
 ---
 
@@ -351,9 +365,36 @@ Ameba画像配信マン
     - diff pre_checksum
     - mysqlcheck
 
-![fit](https://cacoo.com/diagrams/5wRmkoXqhlq5ESwY-4546C.png)
+![fit](https://cacoo.com/diagrams/XTTz51e36WCfHsnH-4546C.png)
 
 ---
+
+# ただ
+
+---
+
+#[fit]毎回このchecksumを流すと
+#[fit]時間がかかりすぎる
+
+---
+
+# ので
+
+---
+
+# [fit]実際の運用では２種類に分けています
+
+---
+
+- 毎回実行
+    - テーブル破損がない事
+- 週一check
+    - テーブル破損がない事
+    - テーブルの中身が一致していること
+    - テーブル定義が一致していること
+    - indexが一致していること
+
+--- 
 
 #これでdataの正当性も
 #ある程度担保できたかな
