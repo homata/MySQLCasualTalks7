@@ -103,7 +103,7 @@ Ameba画像配信マン
 
 ---
 
-# [fit]Slave全台でdata不整合
+# [fit]Slave全台で無限再起動
 # Slave一気に脱落[^1]
 
 
@@ -195,7 +195,7 @@ Ameba画像配信マン
 
 #[fit]自動化しちゃいなyo
 
-![fit](http://stat.ameba.jp/user_images/20141202/19/principia-ca/61/7c/j/o0800053213147350001.jpg)
+![](http://stat.ameba.jp/user_images/20141202/20/principia-ca/c1/8e/j/o0800053213147379073.jpg)
 
 ---
 
@@ -208,11 +208,9 @@ Ameba画像配信マン
 
 ---
 
-![fit](https://cacoo.com/diagrams/dfjBaxd615F7Uc9R-4546C.png)
+![fit](https://cacoo.com/diagrams/pfB5Z8snT7joqZOp-4546C.png)
 
 ---
-
-![fit](https://cacoo.com/diagrams/dfjBaxd615F7Uc9R-4546C.png)
 
 # Backup
 
@@ -221,6 +219,8 @@ Ameba画像配信マン
 - backup_serverより
     - 定期xtrabackup
     - 随時binlog_sync
+
+![fit](https://cacoo.com/diagrams/pfB5Z8snT7joqZOp-4546C.png)
 
 ---
 
@@ -310,48 +310,42 @@ Ameba画像配信マン
 
 ---
 
-#No.1
+![fit](https://cacoo.com/diagrams/mciF2pv8FXnxjXIh-4546C.png)
+
+---
+
+![fit](https://cacoo.com/diagrams/jMWKLdmaXm2xqP2g-4546C.png)
+
+---
+
 ![fit](https://cacoo.com/diagrams/214J2QEBCs3lpF2N-4546C.png)
 
-
 ---
 
-#No.2
-![fit](https://cacoo.com/diagrams/1ltuHzNl9Vqgv2tn-4546C.png)
-
----
-
-#No.3
 ![fit](https://cacoo.com/diagrams/7UXmKbmX4zxtKvKF-4546C.png)
 
 ---
 
-#No.4
 ![fit](https://cacoo.com/diagrams/oToBQq5cMKxt53jM-4546C.png)
 
 ---
 
-# No.5
-![fit](https://cacoo.com/diagrams/Jud4CuRIdlhdnh7n-4546C.png)
+![fit](https://cacoo.com/diagrams/d3Tc4k284L5B4eVN-4546C.png)
 
 ---
 
-# No.6
 ![fit](https://cacoo.com/diagrams/8LnU41hNXe3WUiOl-4546C.png)
 
 ---
 
-# No.7
 ![fit](https://cacoo.com/diagrams/3cUSxYyHq7ojqY5X-4546C.png)
 
 ---
 
-# No.8
 ![fit](https://cacoo.com/diagrams/uuPqbPk0YCpyqlrf-4546C.png)
 
 ---
 
-# No.9
 ![fit](https://cacoo.com/diagrams/XTTz51e36WCfHsnH-4546C.png)
 
 ---
@@ -401,13 +395,12 @@ Ameba画像配信マン
 
 ---
 
-#[fit]：TODO
-#[fit]jobのスクショ貼る
-#[fit]わざと更新させて、diff prechecksumをコケさせる
+![fit](http://stat.ameba.jp/user_images/20141212/19/kakerukaeru/c4/cd/p/o0800051113156822551.png)
 
 ---
 
-# 動いてるね
+# わぁ、動いてる
+#[fit] ~~つなぎ込みして全体で動いたのはついさっき~~
 
 ---
 
@@ -420,11 +413,10 @@ Ameba画像配信マン
 
 ---
 
-#[fit] ~~正直今週稼働し始めたばっかだからまだ感想ない~~
-うちだと結構なService数が立ち上がってるんだけど、
-１Serviceずつrestore出来るかの確認を心温まる手作業で確認しなくても良くなったという精神的な安らぎを得ました。
+#[fit] ~~正直昨日稼働し始めたばっかだからまだ感想ない~~
+小粒なものから大粒なものまで様々なサービスが乱立してる状況で、１サービスずつrestore出来るかの確認を心温まる手作業で確認しなくても良くなったという精神的な安らぎを得た。
 <br />
-あと、Restoreにどれぐらいの時間がかかるかとか分かったりしてちょっと楽しい
+あと、これぐらいの容量だとRestoreにどれぐらいの時間がかかるかとかが分かったりしてちょっと楽しい
 
 ---
 
@@ -435,11 +427,11 @@ Ameba画像配信マン
 #不安点、改善点
 
 - check項目もっと詰めれる気がする
-- まだ５Serviceぐらいでしか稼働してない
-    - もっと実績増やす
+    - マサカリ頂ければ嬉しいです(;◔ิд◔ิ)
+- ぶっちゃけまだ３Serviceぐらいでしか稼働してない
+    - どんどん追加していく
 - まだ100GBぐらいまでの容量のrestoreしかしてない
-    - 容量増えてきたら今の方法だと
-    checkが終わらない気はしてる
+    - 容量増えてきたら今のcheckだと終わらない気はしてる
 
 ---
 
@@ -448,7 +440,12 @@ Ameba画像配信マン
 ---
 
 #[fit]Backup担保により
-#[fit]快適なDB破壊ライフを！＾ｐ＾
+
+---
+
+#[fit]快適なDB破壊ライフを！
+
+![](http://leaf-blog.img.jugem.jp/20120402_1144287.jpg)
 
 ---
 
